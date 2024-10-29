@@ -28,7 +28,6 @@ public class Estoque {
             produtos.add(produto);
 
    }
-
     public void removerProdutoEstoque(long id, int quantidade) {
         for (Produto p : produtos) {
             if (p.getId() == id) {
@@ -49,8 +48,6 @@ public class Estoque {
         System.out.println("Erro! Produto nao encontrado");
     }
 
-
-
    public Produto consultarProduto(long id) {
         for (Produto p : produtos) {
             if (p.getId() == id) {
@@ -59,4 +56,20 @@ public class Estoque {
         }
        return null;
    }
+
+    public void consultarEstoque() {
+        System.out.println("\n===== Estoque de Produtos =====");
+
+        for (Produto p : produtos) {
+            if (p.getQuantidadeProduto() > 0) {
+                System.out.printf("Produto: %-20s | Quantidade: %d\n", p.getNomeProduto(), p.getQuantidadeProduto());
+
+            } else {
+                System.out.println("Nenhum produto disponível no estoque.");
+            }
+        }
+        System.out.println("===============================");
+    }
+
+
 }
