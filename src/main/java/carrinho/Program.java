@@ -15,10 +15,10 @@ public class Program {
 
     public static void main(String[] args) {
 
-        Connection conn = DB.getConnection(); //conexao
+        Connection conn = DB.getConnection();
         DB.closeConnection();
 
-        List<Produto> produtos = new ArrayList<>(); // Correção: usar ArrayList
+        List<Produto> produtos = new ArrayList<>();
 
         produtos.add(new Produto(1, "Calculadora", "Eletrônicos", 500.0, 1));
         produtos.add(new Produto(2, "relogio", "Eletrônicos", 600.0, 1));
@@ -40,7 +40,7 @@ public class Program {
             System.out.print("Escolha uma opção: ");
 
             int escolhaUsuario = sc.nextInt();
-            sc.nextLine(); // Limpar o buffer do scanner
+            sc.nextLine();
 
             switch (escolhaUsuario) {
                 case 1:
@@ -66,7 +66,7 @@ public class Program {
                         System.out.println("5. Voltar ao menu principal");
                         System.out.print("Escolha uma opção: ");
                         int escolhaEstoque = sc.nextInt();
-                        sc.nextLine(); // Limpar o buffer do scanner
+                        sc.nextLine();
                         switch (escolhaEstoque) {
                             case 1:
                                 System.out.println();
@@ -81,7 +81,7 @@ public class Program {
                                 break;
                             case 4:
                                 System.out.println("Remover remover um produto do estoque.");
-                                // Implementação para remover produto
+
                                 break;
                             case 5:
                                 System.out.println("Voltando ao menu principal.");
@@ -91,9 +91,9 @@ public class Program {
                         }
 
                         if (escolhaEstoque == 5) {
-                            break; // Sai do submenu e volta para o menu principal
+                            break;
                         }
-                        System.out.println(); // Linha em branco para melhor legibilidade
+                        System.out.println();
                     }
                     break;
 
