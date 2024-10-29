@@ -56,7 +56,6 @@ public class Estoque {
         }
        return null;
    }
-
     public void consultarEstoque() {
         System.out.println("\n===== Estoque de Produtos =====");
 
@@ -70,6 +69,4 @@ public class Estoque {
         }
         System.out.println("===============================");
     }
-
-
 }
