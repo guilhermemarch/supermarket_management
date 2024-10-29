@@ -1,4 +1,4 @@
-package carrinho.modelo;
+package carrinho.entidades;
 
 import java.util.List;
 

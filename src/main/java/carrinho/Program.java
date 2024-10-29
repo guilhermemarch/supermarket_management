@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import carrinho.modelo.Estoque;
-import carrinho.modelo.Produto;
+import carrinho.entidades.Estoque;
+import carrinho.entidades.Produto;
 
 
 import db.DB;
