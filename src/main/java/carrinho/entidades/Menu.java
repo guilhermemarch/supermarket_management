@@ -20,21 +20,34 @@ public class Menu {
             switch (opcaoEstoque) {
                 case 1 -> {
                     System.out.print("ID do Produto: ");
-                    int id = scanner.nextInt();
-                    //aqui deveria testar se o produto ja esta no estoque!
-                    scanner.nextLine(); // Limpar buffer
-                    System.out.print("Nome do Produto: ");
-                    String nome = scanner.nextLine();
-                    System.out.print("Categoria do Produto: ");
-                    String categoria = scanner.nextLine();
-                    System.out.print("Preço do Produto: ");
-                    double preco = scanner.nextDouble();
-                    System.out.print("Quantidade: ");
-                    int quantidade = scanner.nextInt();
+                    try {
+                        int id = scanner.nextInt();
 
-                    Produto produto = new Produto(id, nome, categoria, preco, quantidade);
-                    estoque.adicionarProduto(produto, quantidade);
-                    System.out.println("Produto adicionado ao estoque.");
+                        scanner.nextLine();
+
+                        Produto testarExistencia = estoque.buscarPorId(id);
+                        if (testarExistencia != null) {
+                            System.out.print("Produto já existente no estoque!\n Digite a quantidade que deseje adicionar: ");
+                            int quantidade = scanner.nextInt();
+                            estoque.atualizarQuantidade(testarExistencia, quantidade);
+                        }
+                        else {
+                            System.out.print("Nome do Produto: ");
+                            String nome = scanner.nextLine();
+                            System.out.print("Categoria do Produto: ");
+                            String categoria = scanner.nextLine();
+                            System.out.print("Preço do Produto: ");
+                            double preco = scanner.nextDouble();
+                            System.out.print("Quantidade: ");
+                            int quantidade = scanner.nextInt();
+
+                            Produto produto = new Produto(id, nome, categoria, preco, quantidade);
+                            estoque.adicionarProduto(produto, quantidade);
+                            System.out.println("Produto adicionado ao estoque.");
+                        }
+                    } catch (SQLException e) {
+                        System.out.println("Erro ao adicionar produto ao estoque " + e.getMessage());
+                    }
                 }
                 case 2 -> {
                     System.out.print("ID do Produto a remover: ");

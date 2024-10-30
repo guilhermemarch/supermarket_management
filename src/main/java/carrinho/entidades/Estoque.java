@@ -45,6 +45,16 @@ public class Estoque {
         }
     }
 
+    protected void atualizarQuantidade(Produto produto, int quantidade) throws SQLException {
+        String sql = "UPDATE estoque SET quantidade = ? WHERE id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, quantidade);
+            stmt.setLong(2, produto.getId());
+            stmt.executeUpdate();
+        }
+    }
+
     public void removerProduto(long id, int quantidade) throws SQLException {
         Produto produto = buscarPorId(id);
         if (produto != null) {
