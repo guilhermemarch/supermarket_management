@@ -8,12 +8,12 @@ import carrinho.entidades.Produto;
 
 public class carrinhoBD {
 
-    // Método para obter a conexão com o banco de dados
+
     private Connection getConnection() throws SQLException {
         return DB.getConnection();
     }
 
-    // Método para adicionar um produto ao carrinho
+
     public void adicionarProdutoCarrinho(Produto produto, int quantidade) throws SQLException {
         String sql = "INSERT INTO carrinho (produto_id, quantidade, valor_total) VALUES (?, ?, ?)";
         try (Connection conn = getConnection();
@@ -25,7 +25,7 @@ public class carrinhoBD {
         }
     }
 
-    // Método para remover um produto do carrinho
+
     public void removerProdutoCarrinho(long produtoId) throws SQLException {
         String sql = "DELETE FROM carrinho WHERE produto_id = ?";
         try (Connection conn = getConnection();
@@ -35,7 +35,7 @@ public class carrinhoBD {
         }
     }
 
-    // Método para buscar um produto específico no carrinho
+
     public Produto buscarProdutoCarrinho(long produtoId) throws SQLException {
         String sql = "SELECT * FROM carrinho INNER JOIN estoque ON carrinho.produto_id = estoque.id WHERE produto_id = ?";
         try (Connection conn = getConnection();
@@ -55,7 +55,7 @@ public class carrinhoBD {
         return null;
     }
 
-    // Método para consultar todos os produtos do carrinho
+
     public List<Produto> consultarCarrinho() throws SQLException {
         List<Produto> produtos = new ArrayList<>();
         String sql = "SELECT * FROM carrinho INNER JOIN estoque ON carrinho.produto_id = estoque.id";
