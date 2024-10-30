@@ -1,8 +1,10 @@
 package carrinho.entidades;
 
+import java.util.List;
+
 public class Produto {
 
-    private int id;
+    private long id;
     private String nomeProduto;
     private String categoriaProduto;
     private double precoProduto;
@@ -16,7 +18,7 @@ public class Produto {
         this.quantidadeProduto = quantidadeProduto;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -60,5 +62,10 @@ public class Produto {
 
         return quantidade * this.precoProduto;
     }
+
+//    public List<Produto> getProdutos() {
+//        return produtos;
+//    }
+    
 
 }

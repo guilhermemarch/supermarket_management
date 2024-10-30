@@ -12,22 +12,47 @@ public class Carrinho {
         this.produtos = produtos;
     }
 
+    public Carrinho() {
+
+    }
+
     public void adicionarProduto(Produto produto, int quantidade) {
 
-        //verificar se o produto ja existe
-        //chamar metodo pra calcular o valor total do carrinho
-
+        for (Produto p : produtos) {
+            if (p.getId() == produto.getId()) {
+                p.setQuantidadeProduto(quantidade + p.getQuantidadeProduto());
+            }
+            produtos.add(produto);
+            calcularValorTotal();
+        }
     }
 
     public void removerProduto(int id) {
-        //percorrer a lista verificando o ID, caso seja igual remover usando metodo
-        //depois de remover chamar o metodo pra atualizar o valor total do carrinho
-
+        for (int i = 0; i < produtos.size(); i++) {
+            Produto p = produtos.get(i);
+            if (p.getId() == id) {
+                produtos.remove(i);
+                break;
+            }
+        }
+        calcularValorTotal();
     }
 
     public void calcularValorTotal() {
-        //valor unitario * quantidade
-        //nao precisa retornar nada, apenas atualizar
+        for (Produto p : produtos) {
+            valorTotalCarrinho += p.getPrecoProduto() * p.getQuantidadeProduto();
+        }
     }
+
+    public Produto buscarProduto(long id) {
+        for (Produto produto : produtos) {
+            if (produto.getId() == id) {
+                return produto; // Retorna o produto encontrado
+            }
+        }
+        return null; // Retorna null se o produto não for encontrado
+    }
+
+
 
 }
