@@ -1,18 +1,18 @@
 package carrinho;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Scanner;
 
+import carrinho.entidades.Carrinho;
+import carrinho.entidades.Menu;
 import carrinho.entidades.Estoque;
-import db.carrinhoBD;
 import carrinho.entidades.Produto;
 
 public class Program {
 
     public static void main(String[] args) throws SQLException {
         Estoque estoque = new Estoque();
-        carrinhoBD carrinhoBD = new carrinhoBD();
+        Carrinho carrinho = new Carrinho();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -24,8 +24,8 @@ public class Program {
             int opcaoPrincipal = scanner.nextInt();
 
             switch (opcaoPrincipal) {
-                case 1 -> gerenciarEstoque(scanner, estoque);
-                case 2 -> gerenciarCarrinho(scanner, carrinhoBD);
+                case 1 -> Menu.gerenciarEstoque(scanner, estoque);
+                case 2 -> Menu.gerenciarCarrinho(scanner, carrinho);
                 case 3 -> {
                     System.out.println("Saindo do programa...");
                     scanner.close();
@@ -36,104 +36,6 @@ public class Program {
         }
     }
 
-    private static void gerenciarEstoque(Scanner scanner, Estoque estoque) throws SQLException {
-        while (true) {
-            System.out.println("\n===== MENU ESTOQUE =====");
-            System.out.println("1. Adicionar produto ao estoque");
-            System.out.println("2. Remover produto do estoque");
-            System.out.println("3. Consultar produto por ID");
-            System.out.println("4. Visualizar estoque completo");
-            System.out.println("5. Voltar ao menu principal");
-            System.out.print("Escolha uma opção: ");
-            int opcaoEstoque = scanner.nextInt();
-
-            switch (opcaoEstoque) {
-                case 1 -> {
-                    System.out.print("ID do Produto: ");
-                    int id = scanner.nextInt();
-                    //aqui deveria testar se o produto ja esta no estoque!
-                    scanner.nextLine(); // Limpar buffer
-                    System.out.print("Nome do Produto: ");
-                    String nome = scanner.nextLine();
-                    System.out.print("Categoria do Produto: ");
-                    String categoria = scanner.nextLine();
-                    System.out.print("Preço do Produto: ");
-                    double preco = scanner.nextDouble();
-                    System.out.print("Quantidade: ");
-                    int quantidade = scanner.nextInt();
-
-                    Produto produto = new Produto(id, nome, categoria, preco, quantidade);
-                    estoque.adicionarProduto(produto, quantidade);
-                    System.out.println("Produto adicionado ao estoque.");
-                }
-                case 2 -> {
-                    System.out.print("ID do Produto a remover: ");
-                    long idRemover = scanner.nextLong();
-                    System.out.print("Quantidade a remover: ");
-                    int quantidadeRemover = scanner.nextInt();
-                    estoque.removerProduto(idRemover, quantidadeRemover);
-                }
-                case 3 -> {
-                    System.out.print("ID do Produto: ");
-                    long idConsulta = scanner.nextLong();
-                    Produto produto = estoque.buscarPorId(idConsulta);
-                    if (produto != null) {
-                        System.out.println("Produto encontrado: " + produto.getNomeProduto() + " | Quantidade: " + produto.getQuantidadeProduto());
-                    } else {
-                        System.out.println("Produto não encontrado.");
-                    }
-                }
-                case 4 -> estoque.exibirEstoque();
-                case 5 -> {
-                    System.out.println("Voltando ao menu principal...");
-                    return;
-                }
-                default -> System.out.println("Opção inválida. Tente novamente.");
-            }
-        }
-    }
-
-    private static void gerenciarCarrinho(Scanner scanner, carrinhoBD carrinhoBD) throws SQLException {
-        while (true) {
-            System.out.println("\n===== MENU CARRINHO =====");
-            System.out.println("1. Adicionar produto ao carrinho");
-            System.out.println("2. Remover produto do carrinho");
-            System.out.println("3. Exibir conteúdo do carrinho");
-            System.out.println("4. Voltar ao menu principal");
-            System.out.print("Escolha uma opção: ");
-            int opcaoCarrinho = scanner.nextInt();
-
-            switch (opcaoCarrinho) {
-                case 1 -> {
-                    System.out.print("ID do Produto a adicionar no carrinho: ");
-                    long idCarrinho = scanner.nextLong();
-                    System.out.print("Quantidade: ");
-                    int quantidadeCarrinho = scanner.nextInt();
-            //        carrinhoBD.adicionarProdutoCarrinho(/* aqui eu tenho o id do carrinho e eu preciso retorar um Produto*/, quantidadeCarrinho);
-                    System.out.println("Produto adicionado ao carrinho.");
-                }
-                case 2 -> {
-                    System.out.print("ID do Produto a remover do carrinho: ");
-                    int idRemoverCarrinho = scanner.nextInt();
-                    carrinhoBD.removerProdutoCarrinho(idRemoverCarrinho);
-                    System.out.println("Produto removido do carrinho.");
-                }
-                case 3 -> {
-                    List<Produto> produtosCarrinho = carrinhoBD.consultarCarrinho();
-                    System.out.println("\n===== Produtos no Carrinho =====");
-                    for (Produto produtoCarrinho : produtosCarrinho) {
-                        System.out.printf("Produto: %-20s | Quantidade: %d\n", produtoCarrinho.getNomeProduto(), produtoCarrinho.getQuantidadeProduto());
-                    }
-                    System.out.println("===============================");
-                }
-                case 4 -> {
-                    System.out.println("Voltando ao menu principal...");
-                    return;
-                }
-                default -> System.out.println("Opção inválida. Tente novamente.");
-            }
-        }
-    }
 }
 
 

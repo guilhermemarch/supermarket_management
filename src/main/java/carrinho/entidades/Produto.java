@@ -1,5 +1,9 @@
 package carrinho.entidades;
 
+import db.DB;
+
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Produto {
@@ -62,6 +66,4 @@ public class Produto {
 
         return quantidade * this.precoProduto;
     }
-
-
 }
