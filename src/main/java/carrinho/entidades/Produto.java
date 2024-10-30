@@ -63,9 +63,5 @@ public class Produto {
         return quantidade * this.precoProduto;
     }
 
-//    public List<Produto> getProdutos() {
-//        return produtos;
-//    }
-    
 
 }

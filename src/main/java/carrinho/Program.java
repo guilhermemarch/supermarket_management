@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import carrinho.entidades.Estoque;
-//import carrinho.servico.servicoCarrinho;
 import db.carrinhoBD;
 import carrinho.entidades.Produto;
 
@@ -14,7 +13,6 @@ public class Program {
     public static void main(String[] args) throws SQLException {
         Estoque estoque = new Estoque();
         carrinhoBD carrinhoBD = new carrinhoBD();
-     //   servicoCarrinho servicoCarrinho = new servicoCarrinho(estoque, carrinhoBD);
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -27,7 +25,7 @@ public class Program {
 
             switch (opcaoPrincipal) {
                 case 1 -> gerenciarEstoque(scanner, estoque);
-            //    case 2 -> gerenciarCarrinho(scanner, servicoCarrinho, carrinhoBD);
+                case 2 -> gerenciarCarrinho(scanner, carrinhoBD);
                 case 3 -> {
                     System.out.println("Saindo do programa...");
                     scanner.close();
@@ -53,6 +51,7 @@ public class Program {
                 case 1 -> {
                     System.out.print("ID do Produto: ");
                     int id = scanner.nextInt();
+                    //aqui deveria testar se o produto ja esta no estoque!
                     scanner.nextLine(); // Limpar buffer
                     System.out.print("Nome do Produto: ");
                     String nome = scanner.nextLine();
@@ -94,45 +93,47 @@ public class Program {
         }
     }
 
-//    private static void gerenciarCarrinho(Scanner scanner, servicoCarrinho servicoCarrinho, carrinhoBD carrinhoBD) throws SQLException {
-//        while (true) {
-//            System.out.println("\n===== MENU CARRINHO =====");
-//            System.out.println("1. Adicionar produto ao carrinho");
-//            System.out.println("2. Remover produto do carrinho");
-//            System.out.println("3. Exibir conteúdo do carrinho");
-//            System.out.println("4. Voltar ao menu principal");
-//            System.out.print("Escolha uma opção: ");
-//            int opcaoCarrinho = scanner.nextInt();
-//
-//            switch (opcaoCarrinho) {
-//                case 1 -> {
-//                    System.out.print("ID do Produto a adicionar no carrinho: ");
-//                    long idCarrinho = scanner.nextLong();
-//                    System.out.print("Quantidade: ");
-//                    int quantidadeCarrinho = scanner.nextInt();
-//                    servicoCarrinho.adicionarProdutoCarrinho(idCarrinho, quantidadeCarrinho);
-//                    System.out.println("Produto adicionado ao carrinho.");
-//                }
-//                case 2 -> {
-//                    System.out.print("ID do Produto a remover do carrinho: ");
-//                    int idRemoverCarrinho = scanner.nextInt();
-//                    servicoCarrinho.removerProdutoCarrinho(idRemoverCarrinho);
-//                    System.out.println("Produto removido do carrinho.");
-//                }
-//                case 3 -> {
-//                    List<Produto> produtosCarrinho = carrinhoBD.consultarCarrinho();
-//                    System.out.println("\n===== Produtos no Carrinho =====");
-//                    for (Produto produtoCarrinho : produtosCarrinho) {
-//                        System.out.printf("Produto: %-20s | Quantidade: %d\n", produtoCarrinho.getNomeProduto(), produtoCarrinho.getQuantidadeProduto());
-//                    }
-//                    System.out.println("===============================");
-//                }
-//                case 4 -> {
-//                    System.out.println("Voltando ao menu principal...");
-//                    return;
-//                }
-//                default -> System.out.println("Opção inválida. Tente novamente.");
-//            }
-//        }
-//    }
+    private static void gerenciarCarrinho(Scanner scanner, carrinhoBD carrinhoBD) throws SQLException {
+        while (true) {
+            System.out.println("\n===== MENU CARRINHO =====");
+            System.out.println("1. Adicionar produto ao carrinho");
+            System.out.println("2. Remover produto do carrinho");
+            System.out.println("3. Exibir conteúdo do carrinho");
+            System.out.println("4. Voltar ao menu principal");
+            System.out.print("Escolha uma opção: ");
+            int opcaoCarrinho = scanner.nextInt();
+
+            switch (opcaoCarrinho) {
+                case 1 -> {
+                    System.out.print("ID do Produto a adicionar no carrinho: ");
+                    long idCarrinho = scanner.nextLong();
+                    System.out.print("Quantidade: ");
+                    int quantidadeCarrinho = scanner.nextInt();
+            //        carrinhoBD.adicionarProdutoCarrinho(/* aqui eu tenho o id do carrinho e eu preciso retorar um Produto*/, quantidadeCarrinho);
+                    System.out.println("Produto adicionado ao carrinho.");
+                }
+                case 2 -> {
+                    System.out.print("ID do Produto a remover do carrinho: ");
+                    int idRemoverCarrinho = scanner.nextInt();
+                    carrinhoBD.removerProdutoCarrinho(idRemoverCarrinho);
+                    System.out.println("Produto removido do carrinho.");
+                }
+                case 3 -> {
+                    List<Produto> produtosCarrinho = carrinhoBD.consultarCarrinho();
+                    System.out.println("\n===== Produtos no Carrinho =====");
+                    for (Produto produtoCarrinho : produtosCarrinho) {
+                        System.out.printf("Produto: %-20s | Quantidade: %d\n", produtoCarrinho.getNomeProduto(), produtoCarrinho.getQuantidadeProduto());
+                    }
+                    System.out.println("===============================");
+                }
+                case 4 -> {
+                    System.out.println("Voltando ao menu principal...");
+                    return;
+                }
+                default -> System.out.println("Opção inválida. Tente novamente.");
+            }
+        }
+    }
 }
+
+
