@@ -6,7 +6,6 @@ import java.util.Scanner;
 import carrinho.entidades.Carrinho;
 import carrinho.entidades.Menu;
 import carrinho.entidades.Estoque;
-import carrinho.entidades.Produto;
 
 public class Program {
 

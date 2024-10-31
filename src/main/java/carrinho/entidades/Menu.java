@@ -82,6 +82,7 @@ public class Menu {
             System.out.println("1. Adicionar produto ao carrinho");
             System.out.println("2. Remover produto do carrinho");
             System.out.println("3. Exibir conteúdo do carrinho");
+            System.out.println("4. Limpar Carrinho");
             System.out.println("4. Voltar ao menu principal");
             System.out.print("Escolha uma opção: ");
             int opcaoCarrinho = scanner.nextInt();
@@ -110,6 +111,12 @@ public class Menu {
                     System.out.println("===============================");
                 }
                 case 4 -> {
+                    System.out.println("Carrinho limpo");
+                    // chamar funcao carrinho.consultarCarrinho - vai retornar todos os produtos no carrinho
+                    // utilizar um for each usando o metodo carrinho.removerProduto() removendo cada produtando passando produto e quantidade
+                    return;
+                }
+                case 5 -> {
                     System.out.println("Voltando ao menu principal...");
                     return;
                 }
