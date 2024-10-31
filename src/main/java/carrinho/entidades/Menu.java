@@ -20,33 +20,27 @@ public class Menu {
             switch (opcaoEstoque) {
                 case 1 -> {
                     System.out.print("ID do Produto: ");
-                    try {
-                        int id = scanner.nextInt();
+                    int id = scanner.nextInt();
+                    scanner.nextLine();
 
-                        scanner.nextLine();
+                    Produto produtoExistente = estoque.buscarPorId(id);
+                    if (produtoExistente != null) {
+                        System.out.print("Produto já existente! Adicione a quantidade: ");
+                        int quantidade = scanner.nextInt();
+                        estoque.atualizarQuantidade(produtoExistente, quantidade);
+                    } else {
+                        System.out.print("Nome do Produto: ");
+                        String nome = scanner.nextLine();
+                        System.out.print("Categoria do Produto: ");
+                        String categoria = scanner.nextLine();
+                        System.out.print("Preço do Produto: ");
+                        double preco = scanner.nextDouble();
+                        System.out.print("Quantidade: ");
+                        int quantidade = scanner.nextInt();
 
-                        Produto testarExistencia = estoque.buscarPorId(id);
-                        if (testarExistencia != null) {
-                            System.out.print("Produto já existente no estoque!\n Digite a quantidade que deseje adicionar: ");
-                            int quantidade = scanner.nextInt();
-                            estoque.atualizarQuantidade(testarExistencia, quantidade);
-                        }
-                        else {
-                            System.out.print("Nome do Produto: ");
-                            String nome = scanner.nextLine();
-                            System.out.print("Categoria do Produto: ");
-                            String categoria = scanner.nextLine();
-                            System.out.print("Preço do Produto: ");
-                            double preco = scanner.nextDouble();
-                            System.out.print("Quantidade: ");
-                            int quantidade = scanner.nextInt();
-
-                            Produto produto = new Produto(id, nome, categoria, preco, quantidade);
-                            estoque.adicionarProduto(produto, quantidade);
-                            System.out.println("Produto adicionado ao estoque.");
-                        }
-                    } catch (SQLException e) {
-                        System.out.println("Erro ao adicionar produto ao estoque " + e.getMessage());
+                        Produto produto = new Produto(id, nome, categoria, preco, quantidade);
+                        estoque.adicionarProduto(produto, quantidade);
+                        System.out.println("Produto adicionado ao estoque.");
                     }
                 }
                 case 2 -> {
@@ -61,7 +55,7 @@ public class Menu {
                     long idConsulta = scanner.nextLong();
                     Produto produto = estoque.buscarPorId(idConsulta);
                     if (produto != null) {
-                        System.out.println("Produto encontrado: " + produto.getNomeProduto() + " | Quantidade: " + produto.getQuantidadeProduto());
+                        System.out.println("Produto: " + produto.getNomeProduto() + " | Quantidade: " + produto.getQuantidadeProduto());
                     } else {
                         System.out.println("Produto não encontrado.");
                     }
@@ -76,14 +70,15 @@ public class Menu {
         }
     }
 
-    public static void gerenciarCarrinho(Scanner scanner, Carrinho carrinho) throws SQLException {
+    public static void gerenciarCarrinho(Scanner scanner, Carrinho carrinho, Estoque estoque) throws SQLException {
         while (true) {
             System.out.println("\n===== MENU CARRINHO =====");
             System.out.println("1. Adicionar produto ao carrinho");
             System.out.println("2. Remover produto do carrinho");
             System.out.println("3. Exibir conteúdo do carrinho");
             System.out.println("4. Limpar Carrinho");
-            System.out.println("4. Voltar ao menu principal");
+            System.out.println("5. Finalizar Compra");
+            System.out.println("6. Voltar ao menu principal");
             System.out.print("Escolha uma opção: ");
             int opcaoCarrinho = scanner.nextInt();
 
@@ -93,30 +88,51 @@ public class Menu {
                     long idCarrinho = scanner.nextLong();
                     System.out.print("Quantidade: ");
                     int quantidadeCarrinho = scanner.nextInt();
-                    //        carrinhoBD.adicionarProdutoCarrinho(/* aqui eu tenho o id do carrinho e eu preciso retorar um Produto*/, quantidadeCarrinho);
-                    System.out.println("Produto adicionado ao carrinho.");
+
+                    Produto produto = estoque.buscarPorId(idCarrinho);
+
+
+                    if (produto != null) {
+                        //funcionando, mas depois que o produto entra no carrnho a unica forma de adicionar mais e remover e depois adicionar de novo
+                        //colocar mensagem 'nao tem nada no carrinho' se nao tiver nada no carrinho
+                        //adicionar finalizar compra - feito
+                        if (carrinho.buscarProdutoCarrinho(idCarrinho) == null) {
+                            carrinho.adicionarProdutoCarrinho(idCarrinho, produto, quantidadeCarrinho);
+                            System.out.println("Produto adicionado ao carrinho.");
+                        }
+                        else {
+                            System.out.println("Produto encontrado no carrinho, certifique-se de remover antes de adicionar novamente!");
+                        }
+                    }
                 }
                 case 2 -> {
                     System.out.print("ID do Produto a remover do carrinho: ");
-                    int idRemoverCarrinho = scanner.nextInt();
+                    long idRemoverCarrinho = scanner.nextLong();
                     carrinho.removerProdutoCarrinho(idRemoverCarrinho);
                     System.out.println("Produto removido do carrinho.");
                 }
-                case 3 -> {
-                    List<Produto> produtosCarrinho = carrinho.consultarCarrinho();
-                    System.out.println("\n===== Produtos no Carrinho =====");
-                    for (Produto produtoCarrinho : produtosCarrinho) {
-                        System.out.printf("Produto: %-20s | Quantidade: %d\n", produtoCarrinho.getNomeProduto(), produtoCarrinho.getQuantidadeProduto());
-                    }
-                    System.out.println("===============================");
-                }
+                case 3 -> carrinho.exibirCarrinho();
                 case 4 -> {
-                    System.out.println("Carrinho limpo");
-                    // chamar funcao carrinho.consultarCarrinho - vai retornar todos os produtos no carrinho
-                    // utilizar um for each usando o metodo carrinho.removerProduto() removendo cada produtando passando produto e quantidade
-                    return;
+                    carrinho.limparCarrinho();
+                    System.out.println("Carrinho limpo.");
                 }
                 case 5 -> {
+                    try {
+                        System.out.println("Compra Finalizada! ");
+                        List<Produto> produtosTeste = carrinho.retornarProdutosCarrinho();
+                        for (Produto p : produtosTeste) {
+                            estoque.adicionarProduto(p, p.getQuantidadeProduto());
+                        }
+                        carrinho.limparCarrinho();
+                        //remover do carrinho e adicionar no estoque
+                        //limpar carrinho
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                case 6 -> {
                     System.out.println("Voltando ao menu principal...");
                     return;
                 }
