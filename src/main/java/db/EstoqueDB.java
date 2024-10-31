@@ -89,4 +89,13 @@ public class EstoqueDB {
             stmt.executeUpdate();
         }
     }
+
+    public void limparEstoque() throws SQLException {
+        String sql = "DELETE FROM estoque";
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(sql);
+        }
+    }
+
 }

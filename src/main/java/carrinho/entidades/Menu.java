@@ -13,7 +13,8 @@ public class Menu {
             System.out.println("2. Remover produto do estoque");
             System.out.println("3. Consultar produto por ID");
             System.out.println("4. Visualizar estoque completo");
-            System.out.println("5. Voltar ao menu principal");
+            System.out.println("5. Limpar estoque");
+            System.out.println("6. Voltar ao menu principal");
             System.out.print("Escolha uma opção: ");
             int opcaoEstoque = scanner.nextInt();
 
@@ -62,6 +63,10 @@ public class Menu {
                 }
                 case 4 -> estoque.exibirEstoque();
                 case 5 -> {
+                    estoque.limparEstoque();
+                    System.out.println("Estoque limpo.");
+                }
+                case 6 -> {
                     System.out.println("Voltando ao menu principal...");
                     return;
                 }
@@ -90,7 +95,6 @@ public class Menu {
                     int quantidadeCarrinho = scanner.nextInt();
 
                     Produto produto = estoque.buscarPorId(idCarrinho);
-
 
                     if (produto != null) {
                         //funcionando, mas depois que o produto entra no carrnho a unica forma de adicionar mais e remover e depois adicionar de novo

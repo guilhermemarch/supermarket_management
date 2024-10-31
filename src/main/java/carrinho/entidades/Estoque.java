@@ -52,7 +52,7 @@ public class Estoque {
     public void exibirEstoque() throws SQLException {
         List<Produto> produtos = consultarEstoque();
         for (Produto p : produtos) {
-            System.out.printf("Produto: %-20s | Quantidade: %d\n", p.getNomeProduto(), p.getQuantidadeProduto());
+            System.out.printf("Produto: %-20s | Quantidade: %d\n", p.getNomeProduto(), p.getQuantidadeProduto()); //ADICIONAR O ID
         }
         System.out.println("===============================");
     }
@@ -62,4 +62,9 @@ public class Estoque {
         produto.setQuantidadeProduto(novaQuantidade);
         estoqueDB.atualizarQuantidadeDB((int) produto.getId(), novaQuantidade);
     }
+
+    public void limparEstoque() throws SQLException {
+        estoqueDB.limparEstoque();
+    }
+
 }

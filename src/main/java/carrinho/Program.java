@@ -22,8 +22,6 @@ public class Program {
             System.out.print("Escolha uma opção: ");
             int opcaoPrincipal = scanner.nextInt();
 
-
-
             switch (opcaoPrincipal) {
                 case 1 -> Menu.gerenciarEstoque(scanner, estoque);
                 case 2 -> Menu.gerenciarCarrinho(scanner, carrinho, estoque);
