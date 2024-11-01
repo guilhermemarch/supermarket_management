@@ -51,12 +51,18 @@ public class Estoque {
 
     public void exibirEstoque() throws SQLException {
         List<Produto> produtos = consultarEstoque();
-        System.out.println("==============================================================");
-        for (Produto p : produtos) {
-            System.out.printf("Produto: %-20s | Codigo: %-5s | Quantidade: %d\n", p.getNomeProduto(), p.getId(), p.getQuantidadeProduto()); //ADICIONAR O ID
+        if (produtos.isEmpty()) {
+            System.out.println("Nenhum produto encontrado no estoque.");
+            return;
         }
-        System.out.println("==============================================================");
+        for (Produto p : produtos) {
+            System.out.println("==============================================================");
+            System.out.printf("Produto: %-20s | Código: %-5s | Quantidade: %d\n",
+                    p.getNomeProduto(), p.getId(), p.getQuantidadeProduto());
+            System.out.println("==============================================================");
+        }
     }
+
 
     public void atualizarQuantidade(Produto produto, int quantidadeAdicional) throws SQLException {
         int novaQuantidade = produto.getQuantidadeProduto() + quantidadeAdicional;

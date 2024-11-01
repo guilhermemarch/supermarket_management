@@ -32,13 +32,20 @@ public class Carrinho {
         return carrinhoDB.consultarCarrinho();
     }
 
+
     public void exibirCarrinho() throws SQLException {
         List<Produto> produtos = consultarCarrinho();
-        System.out.println("=================================================================");
-        for (Produto p : produtos) {
-            System.out.printf("Produto: %-20s | Codigo: %-5s | Quantidade: %d\n", p.getNomeProduto(), p.getId(), p.getQuantidadeProduto());
+
+        if (produtos.isEmpty()) {
+            System.out.println("Nenhum produto encontrado no carrinho.");
+            return;
         }
-        System.out.println("=================================================================");
+        for (Produto p : produtos) {
+            System.out.println("==============================================================");
+            System.out.printf("Produto: %-20s | Código: %-5s | Quantidade: %d\n",
+                    p.getNomeProduto(), p.getId(), p.getQuantidadeProduto());
+            System.out.println("==============================================================");
+        }
     }
 
     public List<Produto> retornarProdutosCarrinho() throws SQLException {

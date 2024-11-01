@@ -50,6 +50,7 @@ public class Menu {
                     System.out.print("Quantidade a remover: ");
                     int quantidadeRemover = scanner.nextInt();
                     estoque.removerProduto(idRemover, quantidadeRemover);
+                    System.out.print("\nProduto removido.");
                 }
                 case 3 -> {
                     System.out.print("ID do Produto: ");
