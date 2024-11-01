@@ -51,10 +51,11 @@ public class Estoque {
 
     public void exibirEstoque() throws SQLException {
         List<Produto> produtos = consultarEstoque();
+        System.out.println("==============================================================");
         for (Produto p : produtos) {
-            System.out.printf("Produto: %-20s | Quantidade: %d\n", p.getNomeProduto(), p.getQuantidadeProduto()); //ADICIONAR O ID
+            System.out.printf("Produto: %-20s | Codigo: %-5s | Quantidade: %d\n", p.getNomeProduto(), p.getId(), p.getQuantidadeProduto()); //ADICIONAR O ID
         }
-        System.out.println("===============================");
+        System.out.println("==============================================================");
     }
 
     public void atualizarQuantidade(Produto produto, int quantidadeAdicional) throws SQLException {
@@ -65,6 +66,20 @@ public class Estoque {
 
     public void limparEstoque() throws SQLException {
         estoqueDB.limparEstoque();
+    }
+    public void exibirInfoID(Produto produto) {
+        if (produto != null) {
+            System.out.println("=================================================================");
+            System.out.printf(" Codigo: %d \n Produto:  %-20s\n Categoria: %-15s\n Quantidade: %d\n  Preço: %.2f",
+                    produto.getId(),
+                    produto.getNomeProduto(),
+                    produto.getCategoriaProduto(),
+                    produto.getQuantidadeProduto(),
+                    produto.getPrecoProduto());
+            System.out.println("\n=================================================================");
+        } else {
+            System.out.println("Produto não encontrado.");
+        }
     }
 
 }

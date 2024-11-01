@@ -55,11 +55,7 @@ public class Menu {
                     System.out.print("ID do Produto: ");
                     long idConsulta = scanner.nextLong();
                     Produto produto = estoque.buscarPorId(idConsulta);
-                    if (produto != null) {
-                        System.out.println("Produto: " + produto.getNomeProduto() + " | Quantidade: " + produto.getQuantidadeProduto());
-                    } else {
-                        System.out.println("Produto não encontrado.");
-                    }
+                    estoque.exibirInfoID(produto);
                 }
                 case 4 -> estoque.exibirEstoque();
                 case 5 -> {
