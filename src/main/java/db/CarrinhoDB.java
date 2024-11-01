@@ -72,6 +72,7 @@ public class CarrinhoDB {
         return produtos;
     }
 
+
     //se o produto desejado for maior que o estoque deve acontecer alguma coisa
 
     public void limparCarrinho() throws SQLException {

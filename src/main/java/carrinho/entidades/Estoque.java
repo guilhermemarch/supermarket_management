@@ -82,4 +82,10 @@ public class Estoque {
         }
     }
 
+    public Produto buscarProdutoEstoqueID(long produtoId) throws SQLException {
+        return estoqueDB.buscarProdutoEstoqueID(produtoId);
+    }
+
+
+
 }

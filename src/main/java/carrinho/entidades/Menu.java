@@ -90,19 +90,24 @@ public class Menu {
                     System.out.print("Quantidade: ");
                     int quantidadeCarrinho = scanner.nextInt();
 
-                    Produto produto = estoque.buscarPorId(idCarrinho);
+                    Produto produto = estoque.buscarProdutoEstoqueID(idCarrinho); // retorna o produto que coincide com o id
 
-                    if (produto != null) {
+                    System.out.println(produto.getQuantidadeProduto());
+
+                    if (produto.getQuantidadeProduto() > quantidadeCarrinho) {
+
                         //funcionando, mas depois que o produto entra no carrnho a unica forma de adicionar mais e remover e depois adicionar de novo
                         //colocar mensagem 'nao tem nada no carrinho' se nao tiver nada no carrinho
                         //adicionar finalizar compra - feito
-                        if (carrinho.buscarProdutoCarrinho(idCarrinho) == null) {
+                        if (carrinho.buscarProdutoCarrinho(idCarrinho) == null) { //se passou é porque nao existe no carrinho
                             carrinho.adicionarProdutoCarrinho(idCarrinho, produto, quantidadeCarrinho);
                             System.out.println("Produto adicionado ao carrinho.");
-                        }
-                        else {
+                        } else {
                             System.out.println("Produto encontrado no carrinho, certifique-se de remover antes de adicionar novamente!");
                         }
+                    }
+                    else {
+                        System.out.println("Quantidade superior a encontrada no estoque!!!");
                     }
                 }
                 case 2 -> {
@@ -118,14 +123,13 @@ public class Menu {
                 }
                 case 5 -> {
                     try {
+                        //aqui verificar se o carrinho nao esta vazio antes de ser finalizado (falta fazer)
                         System.out.println("Compra Finalizada! ");
                         List<Produto> produtosTeste = carrinho.retornarProdutosCarrinho();
                         for (Produto p : produtosTeste) {
                             estoque.adicionarProduto(p, p.getQuantidadeProduto());
                         }
                         carrinho.limparCarrinho();
-                        //remover do carrinho e adicionar no estoque
-                        //limpar carrinho
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

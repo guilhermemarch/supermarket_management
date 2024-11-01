@@ -98,4 +98,23 @@ public class EstoqueDB {
         }
     }
 
+    public Produto buscarProdutoEstoqueID(long produtoId) throws SQLException {
+        String sql = "SELECT *  FROM estoque  WHERE id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, produtoId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Produto(
+                        rs.getInt("estoque.id"),
+                        rs.getString("estoque.nome"),
+                        rs.getString("estoque.categoria"),
+                        rs.getDouble("estoque.valor"),
+                        rs.getInt("estoque.quantidade")
+                );
+            }
+        }
+        return null;
+    }
+
 }
