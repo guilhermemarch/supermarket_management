@@ -33,5 +33,7 @@ public class Program {
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
         }
+
+        //DEPOIS QUE A COMPRA É FINALIZADA EM VEZ DE DIMINUIR O ESTOQUE TA AUMENTANDO
     }
 }

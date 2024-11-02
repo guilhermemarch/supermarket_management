@@ -24,6 +24,11 @@ public class Carrinho {
         carrinhoDB.removerProdutoCarrinho(produtoId);
     }
 
+    public double valorCarrinho() throws SQLException {
+
+        return 0;
+    }
+
     public Produto buscarProdutoCarrinho(long produtoId) throws SQLException {
         return carrinhoDB.buscarProdutoCarrinho(produtoId);
     }
@@ -40,12 +45,12 @@ public class Carrinho {
             System.out.println("Nenhum produto encontrado no carrinho.");
             return;
         }
+        System.out.println("==============================================================");
         for (Produto p : produtos) {
-            System.out.println("==============================================================");
             System.out.printf("Produto: %-20s | Código: %-5s | Quantidade: %d\n",
                     p.getNomeProduto(), p.getId(), p.getQuantidadeProduto());
-            System.out.println("==============================================================");
         }
+        System.out.println("==============================================================");
     }
 
     public List<Produto> retornarProdutosCarrinho() throws SQLException {

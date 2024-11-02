@@ -1,3 +1,6 @@
+CREATE DATABASE projetocarrinho;
+USE projetocarrinho;
+
 CREATE TABLE estoque (
     id INT PRIMARY KEY,
     nome VARCHAR(50),

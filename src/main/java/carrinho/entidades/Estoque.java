@@ -35,6 +35,7 @@ public class Estoque {
 
             if (produto.getQuantidadeProduto() == 0) {
                 estoqueDB.excluirProduto(id);
+                System.out.print("\nProduto removido.");
             }
         } else {
             System.out.println("Produto não encontrado.");
@@ -55,12 +56,12 @@ public class Estoque {
             System.out.println("Nenhum produto encontrado no estoque.");
             return;
         }
+        System.out.println("==============================================================");
         for (Produto p : produtos) {
-            System.out.println("==============================================================");
             System.out.printf("Produto: %-20s | Código: %-5s | Quantidade: %d\n",
                     p.getNomeProduto(), p.getId(), p.getQuantidadeProduto());
-            System.out.println("==============================================================");
         }
+        System.out.println("==============================================================");
     }
 
 
@@ -69,6 +70,18 @@ public class Estoque {
         produto.setQuantidadeProduto(novaQuantidade);
         estoqueDB.atualizarQuantidadeDB((int) produto.getId(), novaQuantidade);
     }
+
+    public void diminuirQuantidadeNoEstoque(Produto produtoCarrinho, int quantidade) throws SQLException {
+        int quantidadeAtual = estoqueDB.obterQuantidade((int) produtoCarrinho.getId());
+        int novaQuantidade = quantidadeAtual - quantidade;
+        if (novaQuantidade >= 0) {
+            produtoCarrinho.setQuantidadeProduto(novaQuantidade);
+            estoqueDB.atualizarQuantidadeDB((int) produtoCarrinho.getId(), novaQuantidade);
+        } else {
+            System.out.println("Erro: quantidade insuficiente no estoque para o produto ");
+        }
+    }
+
 
     public void limparEstoque() throws SQLException {
         estoqueDB.limparEstoque();

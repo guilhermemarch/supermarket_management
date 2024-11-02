@@ -72,6 +72,22 @@ public class CarrinhoDB {
         return produtos;
     }
 
+    public int obterQuantidade(int produtoId) throws SQLException {
+        int quantidade = 0;
+        String sql = "SELECT quantidade FROM estoque WHERE id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, produtoId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    quantidade = rs.getInt("quantidade");
+                }
+            }
+        }
+        return quantidade;
+    }
+
+
 
     //se o produto desejado for maior que o estoque deve acontecer alguma coisa
 

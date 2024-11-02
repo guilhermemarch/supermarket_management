@@ -50,7 +50,6 @@ public class Menu {
                     System.out.print("Quantidade a remover: ");
                     int quantidadeRemover = scanner.nextInt();
                     estoque.removerProduto(idRemover, quantidadeRemover);
-                    System.out.print("\nProduto removido.");
                 }
                 case 3 -> {
                     System.out.print("ID do Produto: ");
@@ -93,7 +92,6 @@ public class Menu {
 
                     Produto produto = estoque.buscarProdutoEstoqueID(idCarrinho); // retorna o produto que coincide com o id
 
-                    System.out.println(produto.getQuantidadeProduto());
 
                     if (produto.getQuantidadeProduto() > quantidadeCarrinho) {
 
@@ -124,13 +122,17 @@ public class Menu {
                 }
                 case 5 -> {
                     try {
-                        //aqui verificar se o carrinho nao esta vazio antes de ser finalizado (falta fazer)
-                        System.out.println("Compra Finalizada! ");
-                        List<Produto> produtosTeste = carrinho.retornarProdutosCarrinho();
-                        for (Produto p : produtosTeste) {
-                            estoque.adicionarProduto(p, p.getQuantidadeProduto());
+                        List<Produto> produtos = carrinho.retornarProdutosCarrinho();
+
+                        if (!produtos.isEmpty()) {
+                            System.out.println("Compra Finalizada!");
+                            for (Produto p : produtos) {
+                                estoque.diminuirQuantidadeNoEstoque(p, p.getQuantidadeProduto());
+                            }
+                            carrinho.limparCarrinho();
+                        } else {
+                            System.out.println("O carrinho está vazio!");
                         }
-                        carrinho.limparCarrinho();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
