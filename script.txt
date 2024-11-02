@@ -3,16 +3,19 @@ USE projetocarrinho;
 
 CREATE TABLE estoque (
     id INT PRIMARY KEY,
-    nome VARCHAR(50),
-    categoria VARCHAR(50),
-    valor DECIMAL(10, 2),
-    quantidade INT
+    nome VARCHAR(50) NOT NULL,
+    categoria VARCHAR(50) NOT NULL,
+    valor DECIMAL(10, 2) NOT NULL,
+    quantidade INT NOT NULL
 );
 
 CREATE TABLE carrinho (
     id INT PRIMARY KEY,
     produto_id INT,
-    quantidade INT,
+    nome VARCHAR(50) NOT NULL,
+    categoria VARCHAR(50) NOT NULL,
+    valor DECIMAL(10, 2) NOT NULL,
+    quantidade INT NOT NULL,
     valor_total DECIMAL(10, 2),
     FOREIGN KEY (produto_id) REFERENCES estoque(id)
 );

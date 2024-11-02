@@ -13,13 +13,16 @@ public class CarrinhoDB {
     }
 
     public void inserirProdutoCarrinho(long produtoId, Produto produto, int quantidade) throws SQLException {
-        String sql = "INSERT INTO carrinho (id, produto_id, quantidade, valor_total) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO carrinho (id, produto_id, nome, categoria, valor, quantidade, valor_total) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, produtoId);
-            stmt.setLong(2, produtoId);
-            stmt.setInt(3, quantidade);
-            stmt.setDouble(4, produto.calcularValorTotal(quantidade));
+            stmt.setLong(1, produtoId);               // id no carrinho
+            stmt.setLong(2, produto.getId());         // id do produto no estoque
+            stmt.setString(3, produto.getNomeProduto());
+            stmt.setString(4, produto.getCategoriaProduto());
+            stmt.setDouble(5, produto.getPrecoProduto());
+            stmt.setInt(6, quantidade);
+            stmt.setDouble(7, produto.getPrecoProduto() * quantidade); // calcula e insere o valor total
             stmt.executeUpdate();
         }
     }
@@ -42,9 +45,9 @@ public class CarrinhoDB {
             if (rs.next()) {
                 return new Produto(
                         rs.getInt("estoque.id"),
-                        rs.getString("estoque.nome"),
-                        rs.getString("estoque.categoria"),
-                        rs.getDouble("estoque.valor"),
+                        rs.getString("carrinho.nome"),
+                        rs.getString("carrinho.categoria"),
+                        rs.getDouble("carrinho.valor"),
                         rs.getInt("carrinho.quantidade")
                 );
             }
@@ -60,11 +63,11 @@ public class CarrinhoDB {
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 Produto produto = new Produto(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("categoria"),
-                        rs.getDouble("valor"),
-                        rs.getInt("quantidade")
+                        rs.getInt("estoque.id"),
+                        rs.getString("carrinho.nome"),
+                        rs.getString("carrinho.categoria"),
+                        rs.getDouble("carrinho.valor"),
+                        rs.getInt("carrinho.quantidade")
                 );
                 produtos.add(produto);
             }
@@ -87,8 +90,6 @@ public class CarrinhoDB {
         return quantidade;
     }
 
-    //se o produto desejado for maior que o estoque deve acontecer alguma coisa
-
     public void limparCarrinho() throws SQLException {
         String sql = "DELETE FROM carrinho";
         try (Connection conn = getConnection();
@@ -96,6 +97,7 @@ public class CarrinhoDB {
             stmt.executeUpdate(sql);
         }
     }
+
     public double valorCarrinho() throws SQLException {
         String sql = "SELECT SUM(valor_total) AS total FROM carrinho";
         double total = 0.0;
@@ -110,4 +112,3 @@ public class CarrinhoDB {
     }
 
 }
-

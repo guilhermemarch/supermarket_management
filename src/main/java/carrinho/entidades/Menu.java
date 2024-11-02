@@ -93,7 +93,7 @@ public class Menu {
                     Produto produto = estoque.buscarProdutoEstoqueID(idCarrinho); // retorna o produto que coincide com o id
 
 
-                    if (produto.getQuantidadeProduto() > quantidadeCarrinho) {
+                    if (produto.getQuantidadeProduto() >= quantidadeCarrinho) {
 
                         //funcionando, mas depois que o produto entra no carrnho a unica forma de adicionar mais e remover e depois adicionar de novo
                         //colocar mensagem 'nao tem nada no carrinho' se nao tiver nada no carrinho
