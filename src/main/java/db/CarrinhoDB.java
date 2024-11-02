@@ -87,8 +87,6 @@ public class CarrinhoDB {
         return quantidade;
     }
 
-
-
     //se o produto desejado for maior que o estoque deve acontecer alguma coisa
 
     public void limparCarrinho() throws SQLException {
@@ -98,5 +96,18 @@ public class CarrinhoDB {
             stmt.executeUpdate(sql);
         }
     }
+    public double valorCarrinho() throws SQLException {
+        String sql = "SELECT SUM(valor_total) AS total FROM carrinho";
+        double total = 0.0;
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            if (rs.next()) {
+                total = rs.getDouble("total");
+            }
+        }
+        return total;
+    }
 
 }
+

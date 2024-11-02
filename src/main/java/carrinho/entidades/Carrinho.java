@@ -25,8 +25,7 @@ public class Carrinho {
     }
 
     public double valorCarrinho() throws SQLException {
-
-        return 0;
+        return carrinhoDB.valorCarrinho();
     }
 
     public Produto buscarProdutoCarrinho(long produtoId) throws SQLException {
@@ -50,6 +49,7 @@ public class Carrinho {
             System.out.printf("Produto: %-20s | Código: %-5s | Quantidade: %d\n",
                     p.getNomeProduto(), p.getId(), p.getQuantidadeProduto());
         }
+        System.out.println("Valor total do carrinho: " + valorCarrinho() + " R$");
         System.out.println("==============================================================");
     }
 
