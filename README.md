@@ -47,7 +47,7 @@ O projeto é dividido em várias classes:
 3. **Importe o script `script.txt` (localizado na pasta do projeto) para criar as tabelas e inserir os dados necessários:**
 
    ```sql
-   /caminho/para/script.txt; 
+   javaprojects\ProjetoCarrinho\src\main\resources\script.txt
 
 ### Configuração do Projeto
 
