@@ -44,8 +44,8 @@ O projeto é dividido em várias classes:
 ### Configuração do Banco de Dados
 
 1. **Certifique-se de que o MySQL está instalado e em execução.**
-2. **Crie um banco de dados no MySQL para o projeto.**
-3. **Importe o script `script.txt` (localizado na pasta do projeto) para criar as tabelas e inserir os dados necessários:**
+2. **Para funcionar, deve ser feita conexão, que esta no arquivo /resources/mysql-connector**
+3. **Após isso, abra o script `script.txt` (localizado na pasta do projeto) para criar as tabelas e inserir os dados necessários:**
 
    ```sql
    \ProjetoCarrinho\src\main\resources\script.txt
@@ -65,7 +65,6 @@ Navegue até a pasta do projeto e execute o seguinte comando para compilar:
 javac -d bin src/main/java/carrinho/**/*.java
 
 ## Execução do Projeto
-Deve ser feita conexão, que esta no arquivo /resources/mysql-connector  
 Execute o programa a partir da classe principal Program:
 java -cp bin carrinho.Program
 
