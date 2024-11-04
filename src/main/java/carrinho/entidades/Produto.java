@@ -1,27 +1,33 @@
-package carrinho.modelo;
+package carrinho.entidades;
+
+import db.DB;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Produto {
 
-    private int codigoProduto;
+    private long id;
     private String nomeProduto;
     private String categoriaProduto;
     private double precoProduto;
     private int quantidadeProduto;
 
     public Produto(int codigoProduto, String nomeProduto, String categoriaProduto, double precoProduto, int quantidadeProduto) {
-        this.codigoProduto = codigoProduto;
+        this.id = codigoProduto;
         this.nomeProduto = nomeProduto;
         this.categoriaProduto = categoriaProduto;
         this.precoProduto = precoProduto;
         this.quantidadeProduto = quantidadeProduto;
     }
 
-    public int getCodigoProduto() {
-        return codigoProduto;
+    public long getId() {
+        return id;
     }
 
-    public void setCodigoProduto(int codigoProduto) {
-        this.codigoProduto = codigoProduto;
+    public void setId (int codigoProduto) {
+        this.id = codigoProduto;
     }
 
     public String getNomeProduto() {
@@ -60,5 +66,4 @@ public class Produto {
 
         return quantidade * this.precoProduto;
     }
-
 }

@@ -11,16 +11,13 @@ public class DB {
     private static Connection conn = null;
 
     public static Connection getConnection() {
-        if (conn == null) {
-            try {
-                Properties props = loadProperties();
-                String url = props.getProperty("dburl");
-                conn = DriverManager.getConnection(url, props);
-            }
-            catch (SQLException e) {
-                throw new DbException(e.getMessage());
-            }
-        } return conn;
+        try {
+            Properties props = loadProperties();
+            String url = props.getProperty("dburl");
+            return DriverManager.getConnection(url, props);
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
     }
 
     public static void closeConnection() {
