@@ -95,8 +95,7 @@ public class Menu {
 
                     if (produto.getQuantidadeProduto() >= quantidadeCarrinho) {
 
-                        //funcionando, mas depois que o produto entra no carrnho a unica forma de adicionar mais e remover e depois adicionar de novo
-                        //colocar mensagem 'nao tem nada no carrinho' se nao tiver nada no carrinho
+                        //colocar mensagem 'nao tem nada no carrinho' se nao tiver nada no carrinho - FEITO
                         //adicionar finalizar compra - feito
                         if (carrinho.buscarProdutoCarrinho(idCarrinho) == null) { //se passou é porque nao existe no carrinho
                             carrinho.adicionarProdutoCarrinho(idCarrinho, produto, quantidadeCarrinho);

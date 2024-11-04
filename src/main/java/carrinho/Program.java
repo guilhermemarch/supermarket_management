@@ -34,6 +34,5 @@ public class Program {
             }
         }
 
-        //DEPOIS QUE A COMPRA É FINALIZADA EM VEZ DE DIMINUIR O ESTOQUE TA AUMENTANDO
     }
 }

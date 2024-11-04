@@ -105,10 +105,17 @@ public class EstoqueDB {
     }
 
     public void limparEstoque() throws SQLException {
-        String sql = "DELETE FROM estoque";
+        String verificarCarrinhoSql = "SELECT COUNT(*) FROM carrinho WHERE produto_id IN (SELECT produto_id FROM estoque)";
+        String deletarEstoqueSql = "DELETE FROM estoque";
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate(sql);
+
+            ResultSet rs = stmt.executeQuery(verificarCarrinhoSql);
+            if (rs.next() && rs.getInt(1) > 0) {
+                throw new SQLException("Não é possível limpar o estoque pois tem produtos no carrinho.");
+            }
+
+            stmt.executeUpdate(deletarEstoqueSql);
         }
     }
 
