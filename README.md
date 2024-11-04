@@ -76,4 +76,12 @@ java -cp bin carrinho.Program
 /servico - Contém a classe Program.java, onde está o método main que executa o programa.  
 /db - Contém as classes de acesso ao banco de dados, responsáveis pela conexão e execução de consultas ao banco de dados. 
 
+## Experiência de Desenvolvimento
+
+No início, enfrentei algumas dificuldades para configurar a conexão com o banco de dados MySQL usando JDBC, mas, ao resolver esses problemas, ganhei muita experiência prática. Aprender a gerenciar o estoque e o carrinho de compras de forma independente, garantindo que o sistema fosse atualizado corretamente, foi um desafio intenso.  
+No segundo dia, o projeto estava tão presente que cheguei a sonhar com ele! 😆  
+Ao longo do desenvolvimento, aprendi boas práticas e percebi a importância de uma documentação clara para garantir que o projeto seja compreensível e sustentável. Essa experiência foi um grande aprendizado técnico e me preparou para enfrentar desafios ainda mais complexos no futuro.  
+
+
+
 
