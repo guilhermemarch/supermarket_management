@@ -16,13 +16,13 @@ public class CarrinhoDB {
         String sql = "INSERT INTO carrinho (id, produto_id, nome, categoria, valor, quantidade, valor_total) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, produtoId);               // id no carrinho
-            stmt.setLong(2, produto.getId());         // id do produto no estoque
+            stmt.setLong(1, produtoId);
+            stmt.setLong(2, produto.getId());
             stmt.setString(3, produto.getNomeProduto());
             stmt.setString(4, produto.getCategoriaProduto());
             stmt.setDouble(5, produto.getPrecoProduto());
             stmt.setInt(6, quantidade);
-            stmt.setDouble(7, produto.getPrecoProduto() * quantidade); // calcula e insere o valor total
+            stmt.setDouble(7, produto.getPrecoProduto() * quantidade);
             stmt.executeUpdate();
         }
     }
