@@ -65,7 +65,7 @@ Navegue até a pasta do projeto e execute o seguinte comando para compilar:
 javac -d bin src/main/java/carrinho/**/*.java
 
 ## Execução do Projeto
-Deve ser feita conexão, que esta no arquivo /resourses/mysql-connector
+Deve ser feita conexão, que esta no arquivo /resources/mysql-connector  
 Execute o programa a partir da classe principal Program:
 java -cp bin carrinho.Program
 
