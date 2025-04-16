@@ -1,5 +1,6 @@
 CREATE DATABASE projetocarrinho;
-USE projetocarrinho;
+
+\c projetocarrinho;
 
 CREATE TABLE estoque (
     id INT PRIMARY KEY,
