@@ -1,141 +1,105 @@
 package db;
 
 import carrinho.entidades.Produto;
+import entity.Estoque;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import util.JPAUtil;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EstoqueDB {
-
-    private Connection getConnection() throws SQLException {
-        return DB.getConnection();
-    }
-
-    public void inserirProduto(Produto produto) throws SQLException {
-        String sql = "INSERT INTO estoque (id, nome, categoria, valor, quantidade) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, produto.getId());
-            stmt.setString(2, produto.getNomeProduto());
-            stmt.setString(3, produto.getCategoriaProduto());
-            stmt.setDouble(4, produto.getPrecoProduto());
-            stmt.setInt(5, produto.getQuantidadeProduto());
-            stmt.executeUpdate();
+    public void adicionarProduto(Estoque produto) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(produto);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
         }
     }
 
-    public void atualizarQuantidade(Produto produto) throws SQLException {
-        String sql = "UPDATE estoque SET quantidade = ? WHERE id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, produto.getQuantidadeProduto());
-            stmt.setLong(2, produto.getId());
-            stmt.executeUpdate();
-        }
-    }
-
-    public void excluirProduto(long id) throws SQLException {
-        String sql = "DELETE FROM estoque WHERE id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-            stmt.executeUpdate();
-        }
-    }
-
-    public Produto buscarPorId(long id) throws SQLException {
-        String sql = "SELECT * FROM estoque WHERE id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new Produto(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("categoria"),
-                        rs.getDouble("valor"),
-                        rs.getInt("quantidade"));
+    public void removerProduto(Long id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Estoque produto = em.find(Estoque.class, id);
+            if (produto != null) {
+                em.remove(produto);
             }
-        }
-        return null;
-    }
-
-    public List<Produto> consultarEstoque() throws SQLException {
-        List<Produto> produtos = new ArrayList<>();
-        String sql = "SELECT * FROM estoque";
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            while (rs.next()) {
-                Produto produto = new Produto(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getString("categoria"),
-                        rs.getDouble("valor"),
-                        rs.getInt("quantidade"));
-                produtos.add(produto);
-            }
-        }
-        return produtos;
-    }
-    public int obterQuantidade(int produtoId) throws SQLException {
-        int quantidade = 0;
-        String sql = "SELECT quantidade FROM estoque WHERE id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, produtoId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    quantidade = rs.getInt("quantidade");
-                }
-            }
-        }
-        return quantidade;
-    }
-    public void atualizarQuantidadeDB(int produtoId, int novaQuantidade) throws SQLException {
-        String sql = "UPDATE estoque SET quantidade = ? WHERE id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, novaQuantidade);
-            stmt.setInt(2, produtoId);
-            stmt.executeUpdate();
+            em.getTransaction().commit();
+        } finally {
+            em.close();
         }
     }
 
-    public void limparEstoque() throws SQLException {
-        String verificarCarrinhoSql = "SELECT COUNT(*) FROM carrinho WHERE produto_id IN (SELECT produto_id FROM estoque)";
-        String deletarEstoqueSql = "DELETE FROM estoque";
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement()) {
-
-            ResultSet rs = stmt.executeQuery(verificarCarrinhoSql);
-            if (rs.next() && rs.getInt(1) > 0) {
-                throw new SQLException("Não é possível limpar o estoque pois tem produtos no carrinho.");
-            }
-
-            stmt.executeUpdate(deletarEstoqueSql);
+    public void atualizarProduto(Estoque produto) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(produto);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
         }
     }
 
-    public Produto buscarProdutoEstoqueID(long produtoId) throws SQLException {
-        String sql = "SELECT *  FROM estoque  WHERE id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, produtoId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new Produto(
-                        rs.getInt("estoque.id"),
-                        rs.getString("estoque.nome"),
-                        rs.getString("estoque.categoria"),
-                        rs.getDouble("estoque.valor"),
-                        rs.getInt("estoque.quantidade")
-                );
-            }
+    public List<Estoque> listarProdutos() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<Estoque> query = em.createQuery("SELECT e FROM Estoque e", Estoque.class);
+            return query.getResultList();
+        } finally {
+            em.close();
         }
-        return null;
     }
 
+    public Estoque buscarProdutoPorId(Long id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.find(Estoque.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Estoque> buscarProdutosPorCategoria(String categoria) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<Estoque> query = em.createQuery(
+                "SELECT e FROM Estoque e WHERE e.categoria = :categoria", Estoque.class);
+            query.setParameter("categoria", categoria);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public int obterQuantidade(int i) {
+    }
+
+    public void atualizarQuantidadeDB(int i, int novaQuantidade) {
+    }
+
+    public List<Produto> consultarEstoque() {
+    }
+
+    public Produto buscarPorId(Long id) {
+    }
+
+    public void excluirProduto(Long id) {
+    }
+
+    public void atualizarQuantidade(Produto produto) {
+    }
+
+    public void inserirProduto(Produto produto) {
+    }
+
+    public void limparEstoque() {
+    }
+
+    public Produto buscarProdutoEstoqueID(Long produtoId) {
+    }
 }

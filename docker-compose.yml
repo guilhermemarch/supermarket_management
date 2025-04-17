@@ -2,15 +2,33 @@ version: '3.8'
 
 services:
   postgres:
-    build: .
+    image: postgres:14-alpine
+    container_name: supermarket-postgres
     ports:
       - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=developer
       - POSTGRES_PASSWORD=1234567
       - POSTGRES_DB=projetocarrinho
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U developer -d projetocarrinho"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: supermarket-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
 
 volumes:
-  postgres_data: 
+  postgres_data:
+    name: supermarket-postgres-data 

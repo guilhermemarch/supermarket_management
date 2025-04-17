@@ -1,114 +1,156 @@
 package db;
 
 import carrinho.entidades.Produto;
+import entity.Carrinho;
+import entity.Estoque;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import util.JPAUtil;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CarrinhoDB {
-
-    private Connection getConnection() throws SQLException {
-        return DB.getConnection();
-    }
-
-    public void inserirProdutoCarrinho(long produtoId, Produto produto, int quantidade) throws SQLException {
-        String sql = "INSERT INTO carrinho (id, produto_id, nome, categoria, valor, quantidade, valor_total) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, produtoId);
-            stmt.setLong(2, produto.getId());
-            stmt.setString(3, produto.getNomeProduto());
-            stmt.setString(4, produto.getCategoriaProduto());
-            stmt.setDouble(5, produto.getPrecoProduto());
-            stmt.setInt(6, quantidade);
-            stmt.setDouble(7, produto.getPrecoProduto() * quantidade);
-            stmt.executeUpdate();
+    public void adicionarAoCarrinho(Carrinho item) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(item);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
         }
     }
 
-    public void removerProdutoCarrinho(long produtoId) throws SQLException {
-        String sql = "DELETE FROM carrinho WHERE produto_id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, produtoId);
-            stmt.executeUpdate();
-        }
-    }
-
-    public Produto buscarProdutoCarrinho(long produtoId) throws SQLException {
-        String sql = "SELECT * FROM carrinho JOIN estoque ON carrinho.produto_id = estoque.id WHERE estoque.id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, produtoId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new Produto(
-                        rs.getInt("estoque.id"),
-                        rs.getString("carrinho.nome"),
-                        rs.getString("carrinho.categoria"),
-                        rs.getDouble("carrinho.valor"),
-                        rs.getInt("carrinho.quantidade")
-                );
+    public void removerDoCarrinho(Long id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Carrinho item = em.find(Carrinho.class, id);
+            if (item != null) {
+                em.remove(item);
             }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
         }
-        return null;
     }
 
-    public List<Produto> consultarCarrinho() throws SQLException {
-        List<Produto> produtos = new ArrayList<>();
-        String sql = "SELECT * FROM carrinho INNER JOIN estoque ON carrinho.produto_id = estoque.id";
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            while (rs.next()) {
-                Produto produto = new Produto(
-                        rs.getInt("estoque.id"),
-                        rs.getString("carrinho.nome"),
-                        rs.getString("carrinho.categoria"),
-                        rs.getDouble("carrinho.valor"),
-                        rs.getInt("carrinho.quantidade")
-                );
-                produtos.add(produto);
+    public void atualizarItem(Carrinho item) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(item);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Carrinho> listarItens() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<Carrinho> query = em.createQuery("SELECT c FROM Carrinho c", Carrinho.class);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public Carrinho buscarItemPorId(Long id) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.find(Carrinho.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    public void limparCarrinho() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createQuery("DELETE FROM Carrinho").executeUpdate();
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+
+    public double calcularTotal() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<Double> query = em.createQuery(
+                "SELECT SUM(c.valorTotal) FROM Carrinho c", Double.class);
+            Double total = query.getSingleResult();
+            return total != null ? total : 0.0;
+        } finally {
+            em.close();
+        }
+    }
+
+    public void inserirProdutoCarrinho(long id, Produto produto, int quantidade) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Carrinho carrinho = new Carrinho();
+            carrinho.setId(id);
+            carrinho.setProduto(produto);
+            carrinho.setQuantidade(quantidade);
+            em.persist(carrinho);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+
+
+
+    }
+
+
+    public void removerProdutoCarrinho(long produtoId) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Carrinho carrinho = em.find(Carrinho.class, produtoId);
+            if (carrinho != null) {
+                em.remove(carrinho);
             }
-        }
-        return produtos;
-    }
-
-    public int obterQuantidade(int produtoId) throws SQLException {
-        int quantidade = 0;
-        String sql = "SELECT quantidade FROM estoque WHERE id = ?";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, produtoId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    quantidade = rs.getInt("quantidade");
-                }
-            }
-        }
-        return quantidade;
-    }
-
-    public void limparCarrinho() throws SQLException {
-        String sql = "DELETE FROM carrinho";
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate(sql);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
         }
     }
 
-    public double valorCarrinho() throws SQLException {
-        String sql = "SELECT SUM(valor_total) AS total FROM carrinho";
-        double total = 0.0;
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            if (rs.next()) {
-                total = rs.getDouble("total");
-            }
+    public Produto buscarProdutoCarrinho(long produtoId) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.find(Produto.class, produtoId);
+        } finally {
+            em.close();
         }
-        return total;
     }
 
+    public double valorCarrinho() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<Double> query = em.createQuery(
+                "SELECT SUM(c.valorTotal) FROM Carrinho c", Double.class);
+            Double total = query.getSingleResult();
+            return total != null ? total : 0.0;
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Produto> consultarCarrinho() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<Produto> query = em.createQuery("SELECT p FROM Produto p", Produto.class);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }
+
+
