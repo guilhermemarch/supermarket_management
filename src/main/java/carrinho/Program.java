@@ -12,12 +12,9 @@ public class Program {
 
     public static void main(String[] args) throws SQLException {
         if (args.length > 0) {
-            // Run in CLI mode
-            SupermarketCLI.main(args);
-            return;
+            SupermarketCLI.main(args);            return;
         }
 
-        // Run in interactive mode
         Estoque estoque = new Estoque();
         Carrinho carrinho = new Carrinho();
         Scanner scanner = new Scanner(System.in);

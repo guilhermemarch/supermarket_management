@@ -92,16 +92,12 @@ public class CarrinhoDB {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
-            Carrinho carrinho = new Carrinho();
-            carrinho.setId(id);
-            carrinho.setProduto(produto);
-            carrinho.setQuantidade(quantidade);
+            Carrinho carrinho = new Carrinho(id, produto, quantidade);
             em.persist(carrinho);
             em.getTransaction().commit();
         } finally {
             em.close();
         }
-
 
 
     }

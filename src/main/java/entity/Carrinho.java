@@ -1,5 +1,6 @@
 package entity;
 
+import carrinho.entidades.Produto;
 import jakarta.persistence.*;
 
 @Entity
@@ -27,6 +28,10 @@ public class Carrinho {
 
     @Column(precision = 10, scale = 2)
     private Double valorTotal;
+
+    public Carrinho(long id, Produto produto, int quantidade) {
+
+    }
 
     public Long getId() {
         return id;
