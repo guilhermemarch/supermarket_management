@@ -1,88 +1,115 @@
+# Supermarket Manager
 
-# Projeto Carrinho
+## Description
 
-## Descrição
+The **Supermarket Manager** is an application developed to manage an inventory and shopping cart system. The main goal is to allow users to add, remove, and view products in the inventory, as well as manage products in the shopping cart.
 
-O **Projeto Carrinho de Mercado** é uma aplicação desenvolvida para gerenciar um sistema de estoque e carrinho de compras. O objetivo principal é permitir que os usuários adicionem, removam e visualizem produtos em estoque, além de gerenciar os produtos no carrinho de compras.
+## Features
 
-## Funcionalidades
+### Inventory Management
+- **Add products to the inventory.**
+- **Remove products from the inventory.**
+- **Search products by ID.**
+- **View all available products.**
 
-### Gerenciar Estoque
-- **Adicionar produtos ao estoque.**
-- **Remover produtos do estoque.**
-- **Consultar produtos por ID.**
-- **Visualizar todo o estoque disponível.**
+### Shopping Cart Management
+- **Add products to the cart.**
+- **Remove products from the cart.**
+- **View cart contents.**
+- **Clear the cart.**
 
-### Gerenciar Carrinho
-- **Adicionar produtos ao carrinho.**
-- **Remover produtos do carrinho.**
-- **Exibir o conteúdo do carrinho.**
-- **Limpar o carrinho.**
+### Checkout
+- **Update the inventory based on purchased products.**
+- **Clear the cart after checkout.**
 
-### Finalizar Compra
-- **Atualizar o estoque com os produtos comprados.**
-- **Limpar o carrinho após a finalização da compra.**
+### Command-Line Interface (new)
+- Manage inventory and cart via CLI using the `picocli` library.
+- Example CLI commands:
+  ```bash
+  java -cp bin carrinho.cli.SupermarketCLI estoque -l
+  java -cp bin carrinho.cli.SupermarketCLI carrinho -a 1 3
+  ```
+- Available options:
+   - `estoque` command:
+      - `-a`, `--add`: Add product (requires ID and quantity)
+      - `-r`, `--remove`: Remove product (requires ID and quantity)
+      - `-l`, `--list`: List all inventory products
+   - `carrinho` command:
+      - `-a`, `--add`: Add product to cart
+      - `-r`, `--remove`: Remove product from cart
+      - `-l`, `--list`: List cart contents
 
-## Estrutura do Projeto
+## Project Structure
 
-O projeto é dividido em várias classes:
+The project is divided into several classes:
 
-- **Program:** Classe principal que gerencia a interação do usuário e apresenta o menu principal.
-- **Menu:** Classe responsável por gerenciar as opções do menu para estoque e carrinho.
-- **Estoque:** Classe que manipula os produtos em estoque e interage com o banco de dados.
-- **Carrinho:** Classe que manipula os produtos no carrinho de compras e interage com o banco de dados.
-- **Produto:** Classe que representa os produtos com atributos como ID, nome, categoria, valor e quantidade.
+- **Program:** Main class that manages user interaction and displays the main menu.
+- **Menu:** Handles menu options for inventory and cart.
+- **Estoque (Inventory):** Manages inventory products and interacts with the database.
+- **Carrinho (Cart):** Manages shopping cart and interacts with the database.
+- **Produto (Product):** Represents a product with attributes like ID, name, category, price, and quantity.
+- **SupermarketCLI:** Provides a command-line interface using the `picocli` library for interacting with inventory and cart.
 
-## Tecnologias Utilizadas
+## Technologies Used
 
 - **Java**
-- **JDBC (Java Database Connectivity)** para interação com o banco de dados.
-- **Banco de dados** (MySQL)
+- **JDBC (Java Database Connectivity)** for database interaction
+- **MySQL** as the database
+- **Picocli** for building CLI commands
 
-## Instalação
+## Installation
 
-### Configuração do Banco de Dados
+### Database Setup
 
-1. **Certifique-se de que o MySQL está instalado e em execução.**
-2. **Para funcionar, deve ser feita conexão, que esta no arquivo /resources/mysql-connector**
-3. **Após isso, abra o script `script.txt` (localizado na pasta do projeto) para criar as tabelas e inserir os dados necessários:**
+1. **Ensure MySQL is installed and running.**
+2. **Connect using the driver provided at `/resources/mysql-connector`.**
+3. **Run the SQL script located at:**
 
-   ```sql
-   \ProjetoCarrinho\src\main\resources\script.txt
+   ```
+   \ProjetoCarrinho\src\main
+esources\script.txt
+   ```
 
-### Configuração do Projeto
+   This script creates the necessary tables and inserts initial data.
 
-**No arquivo `db.properties`, configure as informações de conexão com o banco de dados:**
+### Project Configuration
+
+Edit the `db.properties` file with your database credentials:
 
 ```java
-String url = "jdbc:mysql://localhost:3306/seuBanco";
-String user = "seuUsuario";
-String password = "suaSenha";
+String url = "jdbc:mysql://localhost:3306/yourDatabase";
+String user = "yourUser";
+String password = "yourPassword";
 ```
 
-## Compilação do Projeto
-Navegue até a pasta do projeto e execute o seguinte comando para compilar:
+## Compiling the Project
+
+Navigate to the project root and compile with:
+
+```bash
 javac -d bin src/main/java/carrinho/**/*.java
+```
 
-## Execução do Projeto
-Execute o programa a partir da classe principal Program:
+## Running the Project
+
+To run the main menu interface:
+
+```bash
 java -cp bin carrinho.Program
+```
 
-## Estrutura de Pastas
-/src - Contém os arquivos-fonte.  
-/bin - Contém os arquivos compilados (.class).  
-/resources - Contém o script de banco de dados e a configuração do banco de dados.  
-/entidades - Contém as classes de entidade, que representam os modelos de dados principais, como Produto.  
-/servico - Contém a classe Program.java, onde está o método main que executa o programa.  
-/db - Contém as classes de acesso ao banco de dados, responsáveis pela conexão e execução de consultas ao banco de dados.
+To use the CLI:
 
-## Experiência de Desenvolvimento
+```bash
+java -cp bin carrinho.cli.SupermarketCLI --help
+```
 
-No início, enfrentei algumas dificuldades para configurar a conexão com o banco de dados MySQL usando JDBC, mas, ao resolver esses problemas, ganhei muita experiência prática. Aprender a gerenciar o estoque e o carrinho de compras de forma independente, garantindo que o sistema fosse atualizado corretamente, foi um desafio intenso.
+## Folder Structure
 
-No segundo dia, o projeto estava tão presente que cheguei a sonhar com ele! 😆
-
-Ao longo do desenvolvimento, aprendi boas práticas e percebi a importância de uma documentação clara para garantir que o projeto seja compreensível. Essa experiência foi um grande aprendizado.
-
-
-
+- `/src` - Contains source files
+- `/bin` - Contains compiled `.class` files
+- `/resources` - Contains database scripts and config
+- `/entidades` - Contains entity classes like `Produto`
+- `/servico` - Contains `Program.java`, the main entry point
+- `/db` - Contains classes for DB connection and operations
+- `/cli` - Contains the `SupermarketCLI.java` CLI interface  

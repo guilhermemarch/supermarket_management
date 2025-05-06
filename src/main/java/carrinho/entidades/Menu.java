@@ -21,7 +21,7 @@ public class Menu {
             switch (opcaoEstoque) {
                 case 1 -> {
                     System.out.print("ID do Produto: ");
-                    int id = scanner.nextInt();
+                    Long id = scanner.nextLong();
                     scanner.nextLine();
 
                     Produto produtoExistente = estoque.buscarPorId(id);
@@ -46,14 +46,14 @@ public class Menu {
                 }
                 case 2 -> {
                     System.out.print("ID do Produto a remover: ");
-                    long idRemover = scanner.nextLong();
+                    Long idRemover = scanner.nextLong();
                     System.out.print("Quantidade a remover: ");
                     int quantidadeRemover = scanner.nextInt();
                     estoque.removerProduto(idRemover, quantidadeRemover);
                 }
                 case 3 -> {
                     System.out.print("ID do Produto: ");
-                    long idConsulta = scanner.nextLong();
+                    Long idConsulta = scanner.nextLong();
                     Produto produto = estoque.buscarPorId(idConsulta);
                     estoque.exibirInfoID(produto);
                 }
@@ -86,31 +86,26 @@ public class Menu {
             switch (opcaoCarrinho) {
                 case 1 -> {
                     System.out.print("ID do Produto a adicionar no carrinho: ");
-                    long idCarrinho = scanner.nextLong();
+                    Long idCarrinho = scanner.nextLong();
                     System.out.print("Quantidade: ");
                     int quantidadeCarrinho = scanner.nextInt();
 
-                    Produto produto = estoque.buscarProdutoEstoqueID(idCarrinho); // retorna o produto que coincide com o id
-
+                    Produto produto = estoque.buscarProdutoEstoqueID(idCarrinho);
 
                     if (produto.getQuantidadeProduto() >= quantidadeCarrinho) {
-
-                        //colocar mensagem 'nao tem nada no carrinho' se nao tiver nada no carrinho - FEITO
-                        //adicionar finalizar compra - feito
-                        if (carrinho.buscarProdutoCarrinho(idCarrinho) == null) { //se passou é porque nao existe no carrinho
+                        if (carrinho.buscarProdutoCarrinho(idCarrinho) == null) {
                             carrinho.adicionarProdutoCarrinho(idCarrinho, produto, quantidadeCarrinho);
                             System.out.println("Produto adicionado ao carrinho.");
                         } else {
                             System.out.println("Produto encontrado no carrinho, certifique-se de remover antes de adicionar novamente!");
                         }
-                    }
-                    else {
+                    } else {
                         System.out.println("Quantidade superior a encontrada no estoque!!!");
                     }
                 }
                 case 2 -> {
                     System.out.print("ID do Produto a remover do carrinho: ");
-                    long idRemoverCarrinho = scanner.nextLong();
+                    Long idRemoverCarrinho = scanner.nextLong();
                     carrinho.removerProdutoCarrinho(idRemoverCarrinho);
                     System.out.println("Produto removido do carrinho.");
                 }
@@ -136,8 +131,6 @@ public class Menu {
                         e.printStackTrace();
                     }
                 }
-
-
                 case 6 -> {
                     System.out.println("Voltando ao menu principal...");
                     return;

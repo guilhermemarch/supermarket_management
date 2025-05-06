@@ -1,33 +1,43 @@
 package carrinho.entidades;
 
-import db.DB;
+import lombok.Data;
+import javax.persistence.*;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
+@Data
+@Entity
+@Table(name = "estoque")
 public class Produto {
-
-    private long id;
+    @Id
+    private Long id;
+    
+    @Column(name = "nome", nullable = false)
     private String nomeProduto;
+    
+    @Column(name = "categoria", nullable = false)
     private String categoriaProduto;
+    
+    @Column(name = "valor", nullable = false)
     private double precoProduto;
+    
+    @Column(name = "quantidade", nullable = false)
     private int quantidadeProduto;
 
-    public Produto(int codigoProduto, String nomeProduto, String categoriaProduto, double precoProduto, int quantidadeProduto) {
-        this.id = codigoProduto;
+    public Produto() {}
+
+    public Produto(Long id, String nomeProduto, String categoriaProduto, double precoProduto, int quantidadeProduto) {
+        this.id = id;
         this.nomeProduto = nomeProduto;
         this.categoriaProduto = categoriaProduto;
         this.precoProduto = precoProduto;
         this.quantidadeProduto = quantidadeProduto;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId (int codigoProduto) {
-        this.id = codigoProduto;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNomeProduto() {
@@ -60,10 +70,5 @@ public class Produto {
 
     public void setQuantidadeProduto(int quantidadeProduto) {
         this.quantidadeProduto = quantidadeProduto;
-    }
-
-   public double calcularValorTotal(int quantidade) {
-
-        return quantidade * this.precoProduto;
     }
 }

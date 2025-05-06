@@ -6,10 +6,15 @@ import java.util.Scanner;
 import carrinho.entidades.Carrinho;
 import carrinho.entidades.Menu;
 import carrinho.entidades.Estoque;
+import carrinho.cli.SupermarketCLI;
 
 public class Program {
 
     public static void main(String[] args) throws SQLException {
+        if (args.length > 0) {
+            SupermarketCLI.main(args);            return;
+        }
+
         Estoque estoque = new Estoque();
         Carrinho carrinho = new Carrinho();
         Scanner scanner = new Scanner(System.in);
@@ -33,6 +38,5 @@ public class Program {
                 default -> System.out.println("Opção inválida. Tente novamente.");
             }
         }
-
     }
 }

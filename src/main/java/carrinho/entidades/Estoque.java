@@ -24,7 +24,7 @@ public class Estoque {
         }
     }
 
-    public void removerProduto(long id, int quantidade) throws SQLException {
+    public void removerProduto(Long id, int quantidade) throws SQLException {
         Produto produto = estoqueDB.buscarPorId(id);
         if (produto != null) {
             if (produto.getQuantidadeProduto() < quantidade) {
@@ -42,7 +42,7 @@ public class Estoque {
         }
     }
 
-    public  Produto buscarPorId(long id) throws SQLException {
+    public Produto buscarPorId(Long id) throws SQLException {
         return estoqueDB.buscarPorId(id);
     }
 
@@ -64,28 +64,27 @@ public class Estoque {
         System.out.println("==============================================================");
     }
 
-
     public void atualizarQuantidade(Produto produto, int quantidadeAdicional) throws SQLException {
         int novaQuantidade = produto.getQuantidadeProduto() + quantidadeAdicional;
         produto.setQuantidadeProduto(novaQuantidade);
-        estoqueDB.atualizarQuantidadeDB((int) produto.getId(), novaQuantidade);
+        estoqueDB.atualizarQuantidadeDB(produto.getId().intValue(), novaQuantidade);
     }
 
     public void diminuirQuantidadeNoEstoque(Produto produtoCarrinho, int quantidade) throws SQLException {
-        int quantidadeAtual = estoqueDB.obterQuantidade((int) produtoCarrinho.getId());
+        int quantidadeAtual = estoqueDB.obterQuantidade(produtoCarrinho.getId().intValue());
         int novaQuantidade = quantidadeAtual - quantidade;
         if (novaQuantidade >= 0) {
             produtoCarrinho.setQuantidadeProduto(novaQuantidade);
-            estoqueDB.atualizarQuantidadeDB((int) produtoCarrinho.getId(), novaQuantidade);
+            estoqueDB.atualizarQuantidadeDB(produtoCarrinho.getId().intValue(), novaQuantidade);
         } else {
             System.out.println("Erro: quantidade insuficiente no estoque para o produto ");
         }
     }
 
-
     public void limparEstoque() throws SQLException {
         estoqueDB.limparEstoque();
     }
+
     public void exibirInfoID(Produto produto) {
         if (produto != null) {
             System.out.println("=================================================================");
@@ -101,10 +100,7 @@ public class Estoque {
         }
     }
 
-    public Produto buscarProdutoEstoqueID(long produtoId) throws SQLException {
+    public Produto buscarProdutoEstoqueID(Long produtoId) throws SQLException {
         return estoqueDB.buscarProdutoEstoqueID(produtoId);
     }
-
-
-
 }
