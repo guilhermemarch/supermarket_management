@@ -66,8 +66,7 @@ The project is divided into several classes:
 3. **Run the SQL script located at:**
 
    ```
-   \ProjetoCarrinho\src\main
-esources\script.txt
+   \ProjetoCarrinho\src\main\resources\script.txt
    ```
 
    This script creates the necessary tables and inserts initial data.
